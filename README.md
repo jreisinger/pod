@@ -3,4 +3,5 @@ List and create Kubernetes pods programatically using [client-go](https://github
 ```
 go build
 ./pod -n <namespace>
+kubectl delete po my-test-pod
 ```

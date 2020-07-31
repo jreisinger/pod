@@ -15,14 +15,6 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-func homeDirectory() string {
-	usr, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return usr.HomeDir
-}
-
 func main() {
 	namespace := flag.String("n", "", "namespace")
 	flag.Parse()
@@ -54,7 +46,7 @@ func main() {
 	fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
 
 	// Deploy pods
-	pod := getPodObject()
+	pod := podObject()
 	pod, err = clientset.CoreV1().Pods(*namespace).Create(pod)
 	if err != nil {
 		log.Fatal(err)
@@ -62,7 +54,15 @@ func main() {
 	fmt.Printf("%v\n", pod)
 }
 
-func getPodObject() *core.Pod {
+func homeDirectory() string {
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return usr.HomeDir
+}
+
+func podObject() *core.Pod {
 	return &core.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "my-test-pod",
