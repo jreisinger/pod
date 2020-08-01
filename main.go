@@ -33,12 +33,15 @@ func main() {
 		}
 	}
 
+	// Is't called client set because it contains clients for all k8s resources.
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Get pods
+	// Get pods. Select the client (Pods) and namespace and run a call against
+	// the k8s API. The URL of the call will be:
+	// https://<server-from-config>/api/v1/namespaces/<namespace>/pods
 	pods, err := clientset.CoreV1().Pods(*namespace).List(metav1.ListOptions{})
 	if err != nil {
 		log.Fatal(err.Error())
